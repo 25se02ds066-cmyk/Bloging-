@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataScience Blog</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: #111827;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 22px;
+            list-style: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            text-align: center;
+            padding: 90px 20px;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: auto;
+            font-size: 19px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: white;
+            color: #2563eb;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .roadmap, .blog {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .step {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            padding: 15px 20px;
+            margin-bottom: 18px;
+        }
+
+        .step h3 {
+            color: #2563eb;
+        }
+
+        /* Blog Manager */
+        .blog-manager {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .blog-manager input,
+        .blog-manager textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        .blog-manager textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 8px;
+            display: none;
+        }
+
+        .user-blog {
+            background: #f8fafc;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .user-blog h3 {
+            color: #2563eb;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            border: none;
+            padding: 8px 15px;
+            margin-top: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .edit-btn {
+            background: #f59e0b;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            margin-left: 8px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">DataScience Blog</div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#manage">Share Blog</a></li>
+        </ul>
+    </nav>
+
+    <!-- HOME -->
+    <section class="hero" id="home">
+        <h1>How to Start Data Science as a Beginner</h1>
+        <p>
+            Learn Data Science from zero, build projects,
+            create a portfolio and prepare for your first job.
+        </p>
+
+        <a href="#roadmap" class="btn">Start Learning</a>
+    </section>
+
+    <!-- INTRODUCTION -->
+    <section class="container">
+        <div class="section-title">
+            <h2>What is Data Science?</h2>
+            <p>
+                Data Science uses programming, statistics and machine learning
+                to understand data and solve real-world problems.
+            </p>
+        </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="container" id="roadmap">
+        <div class="section-title">
+            <h2>Data Science Roadmap</h2>
+            <p>Follow these steps if you are starting from zero.</p>
+        </div>
+
+        <div class="roadmap">
+            <div class="step">
+                <h3>Step 1 — Learn Python</h3>
+                <p>Learn variables, loops, functions, lists, dictionaries and OOP basics.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 2 — Learn Statistics</h3>
+                <p>Learn mean, median, probability, standard deviation and correlation.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 3 — Learn SQL</h3>
+                <p>Practice SELECT, WHERE, JOIN, GROUP BY and aggregate functions.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 4 — Learn Data Analysis</h3>
+                <p>Learn NumPy, Pandas and data visualization.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 5 — Learn Machine Learning</h3>
+                <p>Start with regression, classification, decision trees and clustering.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 6 — Build Projects</h3>
+                <p>Build practical projects using real datasets.</p>
+            </div>
+
+            <div class="step">
+                <h3>Step 7 — Prepare for Jobs</h3>
+                <p>Create a resume, GitHub profile and practice interview questions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="container" id="skills">
+        <div class="section-title">
+            <h2>Important Skills</h2>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>🐍 Python</h3>
+                <p>Learn Python, NumPy, Pandas and basic programming.</p>
+            </div>
+
+            <div class="card">
+                <h3>🗄️ SQL</h3>
+                <p>Learn how to query and analyze data from databases.</p>
+            </div>
+
+            <div class="card">
+                <h3>📊 Statistics</h3>
+                <p>Understand probability, distributions and correlation.</p>
+            </div>
+
+            <div class="card">
+                <h3>📈 Visualization</h3>
+                <p>Create charts and communicate data insights.</p>
+            </div>
+
+            <div class="card">
+                <h3>🤖 Machine Learning</h3>
+                <p>Learn machine-learning algorithms and model evaluation.</p>
+            </div>
+
+            <div class="card">
+                <h3>💼 Communication</h3>
+                <p>Learn how to explain your projects clearly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="container" id="projects">
+        <div class="section-title">
+            <h2>Beginner Project Ideas</h2>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>🏠 House Price Prediction</h3>
+                <p>Predict house prices using machine learning.</p>
+            </div>
+
+            <div class="card">
+                <h3>🛒 Sales Analysis</h3>
+                <p>Analyze products, sales and monthly performance.</p>
+            </div>
+
+            <div class="card">
+                <h3>🎬 Movie Recommendation</h3>
+                <p>Create a basic movie recommendation system.</p>
+            </div>
+
+            <div class="card">
+                <h3>💳 Customer Analysis</h3>
+                <p>Analyze customer behavior and groups.</p>
+            </div>
+
+            <div class="card">
+                <h3>📊 Student Performance</h3>
+                <p>Analyze student marks and study habits.</p>
+            </div>
+
+            <div class="card">
+                <h3>🌦️ Weather Analysis</h3>
+                <p>Analyze historical weather data.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CREATE / EDIT / DELETE BLOG -->
+    <section class="container" id="manage">
+
+        <div class="section-title">
+            <h2>✍️ Share Your Blog</h2>
+            <p>Create, edit and delete your own blog posts.</p>
+        </div>
+
+        <div class="blog-manager">
+
+            <label><strong>Blog Title</strong></label>
+            <input
+                type="text"
+                id="blogTitle"
+                placeholder="Enter your blog title"
+            >
+
+            <label><strong>Blog Content</strong></label>
+            <textarea
+                id="blogContent"
+                placeholder="Write your blog here..."
+            ></textarea>
+
+            <button class="save-btn" onclick="saveBlog()" id="saveButton">
+                Add Blog
+            </button>
+
+            <button class="cancel-btn" onclick="cancelEdit()" id="cancelButton">
+                Cancel
+            </button>
+
+            <div id="blogList"></div>
+
+        </div>
+    </section>
+
+    <!-- FEATURED BLOG -->
+    <section class="container">
+        <div class="section-title">
+            <h2>Featured Blog</h2>
+        </div>
+
+        <article class="blog">
+            <h2>How a Beginner Can Start Data Science to Get a Job</h2>
+
+            <p>
+                Many beginners feel confused when they start learning Data Science.
+                The best way to start is to learn the fundamentals step by step.
+            </p>
+
+            <h3>1. Start with Python</h3>
+            <p>
+                Learn Python fundamentals before moving to advanced libraries.
+            </p>
+
+            <h3>2. Learn SQL</h3>
+            <p>
+                Practice SQL queries and learn how databases store information.
+            </p>
+
+            <h3>3. Practice with Real Data</h3>
+            <p>
+                Use real datasets and try to answer questions using data.
+            </p>
+
+            <h3>4. Build Projects</h3>
+            <p>
+                Build projects that demonstrate your Python, SQL,
+                visualization and machine-learning skills.
+            </p>
+
+            <h3>5. Prepare for Jobs</h3>
+            <p>
+                Create your resume and portfolio and practice technical interviews.
+            </p>
+        </article>
+    </section>
+
+    <footer>
+        <p>© 2026 DataScience Blog | Learn • Build • Share</p>
+        <p>Keep learning and keep building 🚀</p>
+    </footer>
+
+    <script>
+        let blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+        let editIndex = -1;
+
+        // Display all blogs
+        function displayBlogs() {
+            const blogList = document.getElementById("blogList");
+
+            blogList.innerHTML = "";
+
+            if (blogs.length === 0) {
+                blogList.innerHTML =
+                    '<p class="empty-message">No blogs added yet. Create your first blog!</p>';
+                return;
+            }
+
+            blogs.forEach(function(blog, index) {
+
+                const blogDiv = document.createElement("div");
+                blogDiv.className = "user-blog";
+
+                blogDiv.innerHTML = `
+                    <h3>${escapeHTML(blog.title)}</h3>
+                    <p>${escapeHTML(blog.content).replace(/\n/g, "<br>")}</p>
+
+                    <button class="edit-btn" onclick="editBlog(${index})">
+                        Edit
+                    </button>
+
+                    <button class="delete-btn" onclick="deleteBlog(${index})">
+                        Delete
+                    </button>
+                `;
+
+                blogList.appendChild(blogDiv);
+            });
+        }
+
+        // Add or update blog
+        function saveBlog() {
+
+            const title = document.getElementById("blogTitle").value.trim();
+            const content = document.getElementById("blogContent").value.trim();
+
+            if (title === "" || content === "") {
+                alert("Please enter both blog title and content.");
+                return;
+            }
+
+            const blogData = {
+                title: title,
+                content: content
+            };
+
+            if (editIndex === -1) {
+                blogs.push(blogData);
+                alert("Blog added successfully!");
+            } else {
+                blogs[editIndex] = blogData;
+                alert("Blog updated successfully!");
+            }
+
+            localStorage.setItem("blogs", JSON.stringify(blogs));
+
+            clearForm();
+            displayBlogs();
+        }
+
+        // Edit blog
+        function editBlog(index) {
+
+            document.getElementById("blogTitle").value = blogs[index].title;
+            document.getElementById("blogContent").value = blogs[index].content;
+
+            editIndex = index;
+
+            document.getElementById("saveButton").textContent = "Update Blog";
+            document.getElementById("cancelButton").style.display = "inline-block";
+
+            window.scrollTo({
+                top: document.getElementById("manage").offsetTop - 80,
+                behavior: "smooth"
+            });
+        }
+
+        // Delete blog
+        function deleteBlog(index) {
+
+            const confirmDelete = confirm(
+                "Are you sure you want to delete this blog?"
+            );
+
+            if (confirmDelete) {
+                blogs.splice(index, 1);
+
+                localStorage.setItem("blogs", JSON.stringify(blogs));
+
+                displayBlogs();
+
+                alert("Blog deleted successfully!");
+            }
+        }
+
+        // Cancel editing
+        function cancelEdit() {
+            clearForm();
+        }
+
+        // Clear form
+        function clearForm() {
+
+            document.getElementById("blogTitle").value = "";
+            document.getElementById("blogContent").value = "";
+
+            editIndex = -1;
+
+            document.getElementById("saveButton").textContent = "Add Blog";
+            document.getElementById("cancelButton").style.display = "none";
+        }
+
+        // Prevent HTML injection inside user blogs
+        function escapeHTML(text) {
+            const div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load blogs when page opens
+        displayBlogs();
+    </script>
+
+</body>
+  </html>
